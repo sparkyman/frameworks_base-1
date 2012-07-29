@@ -64,7 +64,6 @@
             />
 =======
             android:minHeight="@dimen/notification_panel_widget_height"
-            android:background="@*android:drawable/notification_item_background_color"
             android:layout_marginTop="44dip"
         />
 >>>>>>> ff9d784... Framework: Add Power Widget (Phone)
