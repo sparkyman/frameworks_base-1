@@ -3568,6 +3568,9 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                         }
                     }
                 } else {
+                    //avoid connection glitches
+                    if (noDelayInATwoDP)
+                        setBluetoothA2dpOnInt(true);
                     // Headset disconnected
                 }
             } else if (action.equals(Intent.ACTION_USB_AUDIO_ACCESSORY_PLUG) ||
