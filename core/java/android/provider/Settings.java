@@ -2644,6 +2644,12 @@ public final class Settings {
         public static final String LOCKSCREEN_CALENDAR_REMINDERS_ONLY = "lockscreen_calendar_reminders_only";
 
         /**
+         * Always show the battery status on the lockscreen
+         * @hide
+         */
+        public static final String LOCKSCREEN_ALWAYS_SHOW_BATTERY = "lockscreen_always_show_battery";
+
+        /**
          * Show the pending notification counts as overlays on the status bar
          * @hide
          */
@@ -2741,8 +2747,11 @@ public final class Settings {
             QUIET_HOURS_STILL,
             QUIET_HOURS_DIM,
             LOCKSCREEN_ALWAYS_SHOW_BATTERY,
+<<<<<<< HEAD
             SYSTEM_PROFILES_ENABLED,
             POWER_MENU_SCREENSHOT_ENABLED,
+=======
+>>>>>>> 4d4a122... Framework: Add option to always show battery status on lockscreen (1/2)
         };
 
         // Settings moved to Settings.Secure
