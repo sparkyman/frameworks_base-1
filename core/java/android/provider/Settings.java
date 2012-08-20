@@ -2747,11 +2747,8 @@ public final class Settings {
             QUIET_HOURS_STILL,
             QUIET_HOURS_DIM,
             LOCKSCREEN_ALWAYS_SHOW_BATTERY,
-<<<<<<< HEAD
             SYSTEM_PROFILES_ENABLED,
             POWER_MENU_SCREENSHOT_ENABLED,
-=======
->>>>>>> 4d4a122... Framework: Add option to always show battery status on lockscreen (1/2)
         };
 
         // Settings moved to Settings.Secure
