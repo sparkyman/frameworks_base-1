@@ -5173,22 +5173,16 @@ public class WindowManagerService extends IWindowManager.Stub
     // Called by window manager policy.  Not exposed externally.
     @Override
     public void rebootSafeMode() {
-<<<<<<< HEAD
-        ShutdownThread.rebootSafeMode(mContext, true);
-=======
         ShutdownThread.rebootSafeMode(getUiContext(), true);
->>>>>>> fafd6f9... Commit themes to AOKP:
     }
 
     // Called by window manager policy. Not exposed externally.
     @Override
-<<<<<<< HEAD
     public void reboot() {
         ShutdownThread.reboot(mContext, null, true);
-=======
+
     public void reboot(String reason) {
         ShutdownThread.reboot(getUiContext(), reason, false);
->>>>>>> fafd6f9... Commit themes to AOKP:
     }
 
     public void setInputFilter(InputFilter filter) {
