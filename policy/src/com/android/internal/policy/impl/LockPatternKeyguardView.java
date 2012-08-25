@@ -58,6 +58,8 @@ import com.android.internal.widget.LockScreenWidgetCallback;
 import com.android.internal.widget.TransportControlView;
 import com.android.internal.app.ThemeUtils;
 
+import com.android.internal.app.ThemeUtils;
+
 import java.io.IOException;
 
 

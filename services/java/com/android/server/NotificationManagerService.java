@@ -756,6 +756,7 @@ public class NotificationManagerService extends INotificationManager.Stub
         ledObserver.observe();
         QuietHoursSettingsObserver qhObserver = new QuietHoursSettingsObserver(mHandler);
         qhObserver.observe();
+        ThemeUtils.registerThemeChangeReceiver(mContext, mThemeChangeReceiver);
     }
 
     void systemReady() {

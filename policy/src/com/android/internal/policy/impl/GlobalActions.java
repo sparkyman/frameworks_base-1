@@ -153,10 +153,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         if (mDialog != null) {
             if (mUiContext != null) {
                 mUiContext = null;
-            }
-            mDialog.dismiss();
-            mDialog = null;
-            // Show delayed, so that the dismiss of the previous dialog completes
+                // Show delayed, so that the dismiss of the previous dialog completes
             mHandler.sendEmptyMessage(MESSAGE_SHOW);
         } else {
             handleShow();
@@ -362,7 +359,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
         mAdapter = new MyAdapter();
 
-        final AlertDialog.Builder ab = new AlertDialog.Builder(mContext);
+        final AlertDialog.Builder ab = new AlertDialog.Builder(getUiContext());
 
         ab.setAdapter(mAdapter, this)
                 .setInverseBackgroundForced(true);
@@ -403,7 +400,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             names[i++] = profile.getName();
         }
 
-        final AlertDialog.Builder ab = new AlertDialog.Builder(mContext);
+        final AlertDialog.Builder ab = new AlertDialog.Builder(getUiContext());
 
         AlertDialog dialog = ab
                 .setTitle(R.string.global_action_choose_profile)
@@ -620,7 +617,8 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
         public View getView(int position, View convertView, ViewGroup parent) {
             Action action = getItem(position);
-            return action.create(mContext, convertView, parent, LayoutInflater.from(mContext));
+            final Context context = getUiContext();
+            return action.create(context, convertView, parent, LayoutInflater.from(context));
         }
     }
 
