@@ -5167,7 +5167,7 @@ public class WindowManagerService extends IWindowManager.Stub
     // Called by window manager policy.  Not exposed externally.
     @Override
     public void shutdown() {
-        ShutdownThread.shutdown(mContext, true);
+        ShutdownThread.shutdown(getUiContext(), true);
     }
 
     // Called by window manager policy.  Not exposed externally.
@@ -5176,19 +5176,10 @@ public class WindowManagerService extends IWindowManager.Stub
         ShutdownThread.rebootSafeMode(getUiContext(), true);
     }
 
-    // Called by window manager policy. Not exposed externally.
-    @Override
-    public void reboot() {
-        ShutdownThread.reboot(mContext, null, true);
-
-    public void reboot(String reason) {
-        ShutdownThread.rebootSafeMode(mContext, true);
-    }
-
     // Called by window manager policy.  Not exposed externally.
     @Override
     public void reboot() {
-        ShutdownThread.reboot(mContext, null, true);
+        ShutdownThread.reboot(getUiContext(), null, true);
     }
 
     public void setInputFilter(InputFilter filter) {
@@ -10185,3 +10176,4 @@ public class WindowManagerService extends IWindowManager.Stub
                 pendingLayoutChanges));
     }
 }
+
