@@ -2590,7 +2590,7 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     @Override
     protected boolean shouldDisableNavbarGestures() {
-        return mExpanded || (mDisabled & StatusBarManager.DISABLE_HOME) != 0;
+        return mExpanded || NavigationBarView.getEditMode() || (mDisabled & StatusBarManager.DISABLE_HOME) != 0;
     }
 
     private static class FastColorDrawable extends Drawable {
