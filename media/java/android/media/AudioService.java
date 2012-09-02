@@ -277,28 +277,10 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
             "STREAM_TTS"
     };
 
-    // Add separate headset and speaker volumes
-    private static final String[] STREAM_VOLUME_HEADSET_SETTINGS = new String[] {
-        "AudioService.SAVED_VOICE_CALL_HEADSET_VOL",
-        "AudioService.SAVED_SYSTEM_HEADSET_VOL",
-        "AudioService.SAVED_RING_HEADSET_VOL",
-        "AudioService.SAVED_MUSIC_HEADSET_VOL",
-        "AudioService.SAVED_ALARM_HEADSET_VOL",
-        "AudioService.SAVED_NOTIFICATION_HEADSET_VOL",
-    };
-
-    private static final String[] STREAM_VOLUME_SPEAKER_SETTINGS = new String[] {
-        "AudioService.SAVED_VOICE_CALL_SPEAKER_VOL",
-        "AudioService.SAVED_SYSTEM_SPEAKER_VOL",
-        "AudioService.SAVED_RING_SPEAKER_VOL",
-        "AudioService.SAVED_MUSIC_SPEAKER_VOL",
-        "AudioService.SAVED_ALARM_SPEAKER_VOL",
-        "AudioService.SAVED_NOTIFICATION_SPEAKER_VOL",
-    };
-
-    private static final int HEADSET_VOLUME_RESTORE_CAP_VOICE_CALL = 3; // Out of 5
-    private static final int HEADSET_VOLUME_RESTORE_CAP_MUSIC = 8; // Out of 15
-    private static final int HEADSET_VOLUME_RESTORE_CAP_OTHER = 4; // Out of 7
+    private boolean mLinkNotificationWithVolume;
+    // Cap used for safe headset volume restore. The value directly applies
+    // to AudioSystem.STREAM_MUSIC volume and is rescaled for other streams.
+    private static final int HEADSET_VOLUME_RESTORE_CAP = 10;
 
      private final AudioSystem.ErrorCallback mAudioSystemCallback = new AudioSystem.ErrorCallback() {
         public void onError(int error) {
@@ -2413,12 +2395,12 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
         int device = AudioSystem.getDevicesForStream(stream);
         if ((device & (device - 1)) != 0) {
             // Multiple device selection is either:
-            //  - speaker + one other device: give priority to speaker in this case.
+            //  - speaker + one other device: give priority to the non-speaker device in this case.
             //  - one A2DP device + another device: happens with duplicated output. In this case
             // retain the device on the A2DP output as the other must not correspond to an active
             // selection if not the speaker.
             if ((device & AudioSystem.DEVICE_OUT_SPEAKER) != 0) {
-                device = AudioSystem.DEVICE_OUT_SPEAKER;
+                device ^= AudioSystem.DEVICE_OUT_SPEAKER;
             } else {
                 device &= AudioSystem.DEVICE_OUT_ALL_A2DP;
             }
@@ -3568,6 +3550,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                     if (noDelayInATwoDP)
                         setBluetoothA2dpOnInt(false);
                     // Headset plugged in
+<<<<<<< HEAD
                     final boolean capVolumeRestore = Settings.System.getInt(mContentResolver,
                             Settings.System.SAFE_HEADSET_VOLUME_RESTORE, 1) == 1;
                     for (int stream = 0; stream < STREAM_VOLUME_HEADSET_SETTINGS.length; stream++) {
@@ -3603,6 +3586,22 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                                 setStreamVolume(streamAlias, Math.min(volumeCap, lastVolume), 0);
                             } else {
                                 setStreamVolume(streamAlias, lastVolume, 0);
+=======
+                    // Avoid connection glitches
+		
+                    // Volume restore capping
+                    final boolean capVolumeRestore = Settings.System.getInt(mContentResolver,
+                            Settings.System.SAFE_HEADSET_VOLUME_RESTORE, 1) == 1;
+                    if (capVolumeRestore) {
+                        for (int stream = 0; stream < AudioSystem.getNumStreamTypes(); stream++) {
+                            if (stream == mStreamVolumeAlias[stream]) {
+                                final int volume = getStreamVolume(stream);
+                                final int restoreCap = rescaleIndex(HEADSET_VOLUME_RESTORE_CAP,
+                                        AudioSystem.STREAM_MUSIC, stream);
+                                if (volume > restoreCap) {
+                                    setStreamVolume(stream, restoreCap, 0);
+                                }
+>>>>>>> 6e5b2cf... Audio: Restore volume for all streams on headset connect/disconnect
                             }
                         }
                     }
@@ -3611,6 +3610,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                     if (noDelayInATwoDP)
                         setBluetoothA2dpOnInt(true);
                     // Headset disconnected
+<<<<<<< HEAD
                     for (int stream = 0; stream < STREAM_VOLUME_SPEAKER_SETTINGS.length; stream++) {
                         final int streamAlias = mStreamVolumeAlias[stream];
                         // Save headset volume
@@ -3628,6 +3628,8 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                         if (lastVolume >= 0)
                             setStreamVolume(streamAlias, lastVolume, 0);
                     }
+=======
+>>>>>>> 6e5b2cf... Audio: Restore volume for all streams on headset connect/disconnect
                 }
             } else if (action.equals(Intent.ACTION_USB_AUDIO_ACCESSORY_PLUG) ||
                            action.equals(Intent.ACTION_USB_AUDIO_DEVICE_PLUG)) {
