@@ -3550,43 +3550,6 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                     if (noDelayInATwoDP)
                         setBluetoothA2dpOnInt(false);
                     // Headset plugged in
-<<<<<<< HEAD
-                    final boolean capVolumeRestore = Settings.System.getInt(mContentResolver,
-                            Settings.System.SAFE_HEADSET_VOLUME_RESTORE, 1) == 1;
-                    for (int stream = 0; stream < STREAM_VOLUME_HEADSET_SETTINGS.length; stream++) {
-                        final int streamAlias = mStreamVolumeAlias[stream];
-                        // Save speaker volume
-                        System.putInt(mContentResolver, STREAM_VOLUME_SPEAKER_SETTINGS[stream],
-                                getStreamVolume(streamAlias));
-                        // Restore headset volume
-                        try {
-                            lastVolume = System.getInt(mContentResolver,
-                                    STREAM_VOLUME_HEADSET_SETTINGS[streamAlias]);
-                        } catch (SettingNotFoundException e) {
-                            lastVolume = -1;
-                        }
-                        if (lastVolume >= 0) {
-                            if (capVolumeRestore) {
-                                final int volumeCap;
-                                switch (streamAlias) {
-                                    case AudioSystem.STREAM_VOICE_CALL:
-                                        volumeCap = HEADSET_VOLUME_RESTORE_CAP_VOICE_CALL;
-                                        break;
-                                    case AudioSystem.STREAM_MUSIC:
-                                        volumeCap = HEADSET_VOLUME_RESTORE_CAP_MUSIC;
-                                        break;
-                                    case AudioSystem.STREAM_SYSTEM:
-                                    case AudioSystem.STREAM_RING:
-                                    case AudioSystem.STREAM_ALARM:
-                                    case AudioSystem.STREAM_NOTIFICATION:
-                                    default:
-                                        volumeCap = HEADSET_VOLUME_RESTORE_CAP_OTHER;
-                                        break;
-                                }
-                                setStreamVolume(streamAlias, Math.min(volumeCap, lastVolume), 0);
-                            } else {
-                                setStreamVolume(streamAlias, lastVolume, 0);
-=======
                     // Avoid connection glitches
 		
                     // Volume restore capping
@@ -3601,35 +3564,11 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                                 if (volume > restoreCap) {
                                     setStreamVolume(stream, restoreCap, 0);
                                 }
->>>>>>> 6e5b2cf... Audio: Restore volume for all streams on headset connect/disconnect
                             }
                         }
                     }
                 } else {
-                    //avoid connection glitches
-                    if (noDelayInATwoDP)
-                        setBluetoothA2dpOnInt(true);
                     // Headset disconnected
-<<<<<<< HEAD
-                    for (int stream = 0; stream < STREAM_VOLUME_SPEAKER_SETTINGS.length; stream++) {
-                        final int streamAlias = mStreamVolumeAlias[stream];
-                        // Save headset volume
-                        System.putInt(mContentResolver, STREAM_VOLUME_HEADSET_SETTINGS[stream],
-                                getStreamVolume(streamAlias));
-                        // Restore speaker volume
-                        try {
-                            lastVolume = System.getInt(mContentResolver,
-                                    STREAM_VOLUME_SPEAKER_SETTINGS[streamAlias]);
-                        } catch (SettingNotFoundException e) {
-                            lastVolume = -1;
-                        }
-                        System.putInt(mContentResolver, STREAM_VOLUME_HEADSET_SETTINGS[stream],
-                                getStreamVolume(stream));
-                        if (lastVolume >= 0)
-                            setStreamVolume(streamAlias, lastVolume, 0);
-                    }
-=======
->>>>>>> 6e5b2cf... Audio: Restore volume for all streams on headset connect/disconnect
                 }
             } else if (action.equals(Intent.ACTION_USB_AUDIO_ACCESSORY_PLUG) ||
                            action.equals(Intent.ACTION_USB_AUDIO_DEVICE_PLUG)) {
