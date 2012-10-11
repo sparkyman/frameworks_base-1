@@ -274,6 +274,7 @@ class ServerThread extends Thread {
         StatusBarManagerService statusBar = null;
         InputMethodManagerService imm = null;
         AppWidgetService appWidget = null;
+        ProfileManagerService profile = null;
         NotificationManagerService notification = null;
         WallpaperManagerService wallpaper = null;
         LocationManagerService location = null;
@@ -468,17 +469,11 @@ class ServerThread extends Thread {
             }
 
             try {
-                if (accountManager != null)
-                    accountManager.systemReady();
+                Slog.i(TAG, "Profile Manager");
+                profile = new ProfileManagerService(context);
+                ServiceManager.addService(Context.PROFILE_SERVICE, profile);
             } catch (Throwable e) {
-                reportWtf("making Account Manager Service ready", e);
-            }
-
-            try {
-                if (contentService != null)
-                    contentService.systemReady();
-            } catch (Throwable e) {
-                reportWtf("making Content Service ready", e);
+                Slog.e(TAG, "Failure starting Profile Manager", e);
             }
 
             try {
