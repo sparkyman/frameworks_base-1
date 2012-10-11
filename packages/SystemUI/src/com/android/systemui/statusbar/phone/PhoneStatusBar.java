@@ -182,7 +182,9 @@ public class PhoneStatusBar extends BaseStatusBar {
     private TextView mCarrierLabel;
     private boolean mCarrierLabelVisible = false;
     private int mCarrierLabelHeight;
-    private TextView mEmergencyCallLabel;
+
+    // clock
+    private boolean mShowClock;
 
     // drag bar
     CloseDragHandle mCloseView;
@@ -204,6 +206,7 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     // the tracker view
     int mTrackingPosition; // the position of the top of the tracking view.
+    private boolean mPanelSlightlyVisible;
 
     // ticker
     private Ticker mTicker;
@@ -1027,9 +1030,12 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     public void showClock(boolean show) {
         if (mStatusBarView == null) return;
+        ContentResolver resolver = mContext.getContentResolver();
         View clock = mStatusBarView.findViewById(R.id.clock);
+        mShowClock = (Settings.System.getInt(resolver,
+                Settings.System.STATUS_BAR_CLOCK, 1) == 1);
         if (clock != null) {
-            clock.setVisibility(show ? View.VISIBLE : View.GONE);
+            clock.setVisibility(show ? (mShowClock ? View.VISIBLE : View.GONE) : View.GONE);
         }
     }
 

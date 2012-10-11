@@ -57,7 +57,30 @@ public class Clock extends TextView {
     private static final int AM_PM_STYLE_SMALL   = 1;
     private static final int AM_PM_STYLE_GONE    = 2;
 
-    private static final int AM_PM_STYLE = AM_PM_STYLE_GONE;
+    private static int AM_PM_STYLE = AM_PM_STYLE_GONE;
+
+    private int mAmPmStyle;
+    private boolean mShowClock;
+
+    Handler mHandler;
+
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_AM_PM), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_CLOCK), false, this);
+        }
+
+        @Override public void onChange(boolean selfChange) {
+            updateSettings();
+        }
+    }
 
     public Clock(Context context) {
         this(context, null);
@@ -203,6 +226,30 @@ public class Clock extends TextView {
  
         return result;
 
+    }
+
+    private void updateSettings(){
+        ContentResolver resolver = mContext.getContentResolver();
+
+        mAmPmStyle = (Settings.System.getInt(resolver,
+                Settings.System.STATUS_BAR_AM_PM, 2));
+
+        if (mAmPmStyle != AM_PM_STYLE) {
+            AM_PM_STYLE = mAmPmStyle;
+            mClockFormatString = "";
+
+            if (mAttached) {
+                updateClock();
+            }
+        }
+
+        mShowClock = (Settings.System.getInt(resolver,
+                Settings.System.STATUS_BAR_CLOCK, 1) == 1);
+
+        if(mShowClock)
+            setVisibility(View.VISIBLE);
+        else
+            setVisibility(View.GONE);
     }
 }
 
