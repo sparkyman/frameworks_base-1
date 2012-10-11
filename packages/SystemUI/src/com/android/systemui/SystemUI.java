@@ -28,8 +28,6 @@ public abstract class SystemUI {
 
     public abstract void start();
 
-    public FrameLayout mStatusBarContainer;
-    
     protected void onConfigurationChanged(Configuration newConfig) {
     }
 
