@@ -3818,5 +3818,12 @@
   <java-symbol type="id" name="calendar_event_title" />
   <java-symbol type="id" name="calendar_event_details" />
 
->>>>>>> a6c11c9... Framework: Port CM9 features to CM10 (WIP) (Part 2 of 2)
+  <!-- Power widget -->
+  <java-symbol type="string" name="hour" />
+  <java-symbol type="string" name="hours" />
+  <java-symbol type="string" name="minute" />
+  <java-symbol type="string" name="minutes" />
+  <java-symbol type="string" name="second" />
+  <java-symbol type="string" name="seconds" />
+
 </resources>
