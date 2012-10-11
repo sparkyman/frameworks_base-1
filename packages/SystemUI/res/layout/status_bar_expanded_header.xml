@@ -73,3 +73,4 @@
         android:contentDescription="@string/accessibility_clear_all"
         />            
 </LinearLayout>
+
